@@ -1,3 +1,7 @@
+# Electron-Dof-GM
+
+基于 electron-build 推荐的模板 electron-webpack-quick-start 创建的项目
+
 # electron-webpack-quick-start
 > A bare minimum project structure to get started developing with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
 
