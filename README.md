@@ -48,3 +48,7 @@ yarn dist
 # `yarn compile` & create unpacked build with electron-builder
 yarn dist:dir
 ```
+
+# 使用Vue进行开发
+
+安装`eletron-webapck-vue`

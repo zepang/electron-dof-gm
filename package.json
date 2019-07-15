@@ -9,12 +9,19 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "source-map-support": "^0.5.12"
+    "iview": "^3.4.2",
+    "source-map-support": "^0.5.12",
+    "vue-devtools": "^5.1.0",
+    "vue-router": "^3.0.7"
   },
   "devDependencies": {
     "electron": "5.0.6",
     "electron-builder": "^21.0.11",
     "electron-webpack": "^2.7.4",
+    "electron-webpack-vue": "^2.3.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "vue": "^2.6.10",
     "webpack": "~4.35.3"
   },
   "electronWebpack": {
