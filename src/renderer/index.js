@@ -1,10 +1,10 @@
 import Vue from 'vue'
+import Antd from 'ant-design-vue'
 import App from './App'
 import router from './router'
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+import 'ant-design-vue/dist/antd.css'
 
-Vue.use(iView)
+Vue.use(Antd)
 
 new Vue({
   el: '#app',

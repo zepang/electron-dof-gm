@@ -9,7 +9,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "iview": "^3.4.2",
+    "ant-design-vue": "^1.3.10",
     "source-map-support": "^0.5.12",
     "vue-devtools": "^5.1.0",
     "vue-router": "^3.0.7"
