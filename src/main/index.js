@@ -12,8 +12,8 @@ let mainWindow
 function createMainWindow() {
   Menu.setApplicationMenu(null)
   const window = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     titleBarStyle: 'hidden',
     // frame: false,
     webPreferences: {nodeIntegration: true}

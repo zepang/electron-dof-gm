@@ -1,23 +1,26 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider
+      id="side-bar"
       :trigger="null"
       collapsible
       v-model="collapsed"
     >
-      <div class="logo" />
+      <div class="logo">
+        Dof<span v-if="!collapsed">-GM System</span>
+      </div>
       <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
         <a-menu-item key="1">
           <a-icon type="user" />
-          <span>nav 1</span>
+          <span>用户管理</span>
         </a-menu-item>
         <a-menu-item key="2">
-          <a-icon type="video-camera" />
-          <span>nav 2</span>
+          <a-icon type="mail" />
+          <span>邮件管理</span>
         </a-menu-item>
         <a-menu-item key="3">
-          <a-icon type="upload" />
-          <span>nav 3</span>
+          <a-icon type="appstore" />
+          <span>常用功能</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -30,7 +33,7 @@
         />
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
-        Content
+        <router-view></router-view>
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -44,7 +47,10 @@ export default {
   },
 }
 </script>
-<style>
+<style lang="scss" scoped>
+#components-layout-demo-custom-trigger {
+  height: 100vh;
+}
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -59,7 +65,15 @@ export default {
 
 #components-layout-demo-custom-trigger .logo {
   height: 32px;
-  background: rgba(255,255,255,.2);
+  background: rgba(255,255,255,.1);
+  line-height: 32px;
+  text-align: center;
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 4px 3px 2px #000000;
   margin: 16px;
+}
+#side-bar {
+  box-shadow: 2px 0 7px 0 rgba(172,173,181,.38);
 }
 </style>

@@ -7,8 +7,11 @@
 				<a-form-item>
 					<a-input
 						v-decorator="[
-							'服务器地址',
-							{ rules: [{ required: true, message: 'Please input your name' }] }
+							'host',
+							{ 
+								rules: [{ required: true, message: '请输入服务IP地址' }],
+								initialValue: '94.191.40.190'
+							}
 						]"
 						placeholder="服务器IP，例如：192.169.200.131"
 					/>
@@ -16,26 +19,45 @@
 				<a-form-item>
 					<a-input
 						v-decorator="[
-							'数据库密码',
-							{
-								rules: [
-									{ required: checkNick, message: 'Please input your nickname' }
-								]
+							'user',
+							{ 
+								rules: [{ required: true, message: '请输入数据库用户名' }],
+								initialValue: 'game'
 							}
 						]"
-						placeholder="数据库密码"
+						placeholder="数据库用户名，例如：game"
 					/>
 				</a-form-item>
 				<a-form-item>
-					<a-input placeholder="端口号，例如：3306" />
+					<a-input
+						v-decorator="[
+							'password',
+							{
+								rules: [
+									{ required: true, message: '请输入数据库密码' }
+								],
+								initialValue: 'uu5!^%jg'
+							}
+						]"
+						placeholder="数据库密码， 例如：uu5!^%jg"
+					/>
+				</a-form-item>
+				<a-form-item >
+					<a-input-number style="width: 260px;" v-decorator="['port', {
+						rules: [
+							{ required: true, message: '请输入数据库端口号' }
+						],
+						initialValue: 3306
+					}]" placeholder="端口号，例如：3306" />
 				</a-form-item>
 				<a-form-item>
-					<a-button class="login-form-button" type="primary" @click="check">
-						连接数据库
+					<a-button class="login-form-button" :type="btn.type" @click="check" :loading="btn.loading">
+						{{ btn.text }}
 					</a-button>
 				</a-form-item>
 			</a-form>
 		</div>
+		<div class="mask" v-show="isConnected"></div>
 	</div>
 </template>
 
@@ -45,8 +67,13 @@ const videoMedia = require('../assets/night.mp4')
 export default {
 	data () {
 		return {
-			checkNick: false,
+			btn: {
+				text: '连接数据库',
+				loading: false,
+				type: 'primary'
+			},
 			form: this.$form.createForm(this),
+			isConnected: false
 		};
 	},
 	mounted () {
@@ -66,16 +93,31 @@ export default {
 	methods: {
 		check () {
 			this.form.validateFields(
-				(err) => {
+				(err, values) => {
 					if (!err) {
-						console.info('success')
-						this.login
+						console.log(values)
+						this.btn.loading = true
+						this.btn.text = '正在连接数据库'
+						this.login(values)
 					}
 				},
 			)
 		},
-		login () {
-
+		login (data) {
+			this.$createConnection(data)
+			this.$connection.connect((err) => {
+				if (err) {
+					this.btn.loading = false
+					this.btn.text = '连接数据库'
+					this.$message.error('连接数据库失败，请仔细检查数据库配置信息')
+					return
+				}
+				this.btn.loading = false
+				this.btn.text = '连接数据库'
+				this.$message.success('连接数据库成功，即将进入Dof-GM工具...')
+				this.isConnected = true
+				this.$router.push({path: '/'})
+			})
 		}
 	}
 }
@@ -104,5 +146,16 @@ export default {
 	.login-form-button {
 		width: 100%;
 	}
+}
+
+.mask {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 99;
+	opacity: 0;
+	overflow: hidden;
 }
 </style>

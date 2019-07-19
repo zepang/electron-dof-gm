@@ -24,4 +24,7 @@ export default {
 html {
   font-size: 100%;
 }
+#app {
+  height: 100vh;
+}
 </style>
