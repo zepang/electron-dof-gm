@@ -18,7 +18,9 @@
     </header>
     <main>
       <a-table 
+        :dataSource="tableData"
         :columns="tableColumns">
+        <router-link slot="action" slot-scope="action" :to="`/accounts/${action.UID}`">查看详情</router-link>
       </a-table>
     </main>
   </div>
@@ -30,6 +32,7 @@ export default {
     return {
       plainOptions: ['全部', '在线', '不在线'],
       userType: '全部',
+      tableData: [],
       tableColumns: [
         {
           title: 'UID',
@@ -40,12 +43,30 @@ export default {
           dataIndex: 'accountname'
         },
         {
-          title: '操作'
+          title: '操作',
+          scopedSlots: { customRender: 'action' }
         }
       ]
     }
   },
+  mounted () {
+    this.getList()
+  },
   methods: {
+    getList () {
+      let sql = `select * from d_taiwan.accounts`
+      this.$connection.query(sql, (error, result) => {
+        if (error) {
+          console.log(error)
+          return
+        }
+        console.log(result)
+        this.tableData = result.map(item => {
+          item.key = item.UID
+          return item
+        })
+      })
+    },
     onUserTypeChange () {},
     onSearch () {}
   }

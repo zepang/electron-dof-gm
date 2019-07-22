@@ -3,28 +3,34 @@ import Router from 'vue-router'
 
 import primaryLayout from '../Layout/primary'
 
-import home from '../pages/home'
+import accounts from '../pages/accounts'
+import account from '../pages/account'
 import login from '../pages/login'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'login',
-    //   component: login
-    // },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
     {
       path: '/',
       name: 'primaryLayout',
       component: primaryLayout,
-      redirect: '/home',
+      redirect: '/login',
       children: [
         {
-          path: 'home',
-          name: 'home',
-          component: home,
+          path: 'accounts',
+          name: 'accounts',
+          component: accounts,
+        },
+        {
+          path: 'accounts/:id',
+          name: 'account',
+          component: account,
         }
       ]
     }

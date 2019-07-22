@@ -116,7 +116,7 @@ export default {
 				this.btn.text = '连接数据库'
 				this.$message.success('连接数据库成功，即将进入Dof-GM工具...')
 				this.isConnected = true
-				this.$router.push({path: '/'})
+				this.$router.push({path: '/accounts'})
 			})
 		}
 	}
