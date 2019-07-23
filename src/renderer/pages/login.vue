@@ -63,6 +63,7 @@
 
 <script>
 import Bideo from '../assets/js/bideo.esm.js'
+import { ipcRenderer } from 'electron'
 const videoMedia = require('../assets/night.mp4')
 export default {
 	data () {
@@ -95,7 +96,6 @@ export default {
 			this.form.validateFields(
 				(err, values) => {
 					if (!err) {
-						console.log(values)
 						this.btn.loading = true
 						this.btn.text = '正在连接数据库'
 						this.login(values)
@@ -104,8 +104,8 @@ export default {
 			)
 		},
 		login (data) {
-			this.$createConnection(data)
-			this.$connection.connect((err) => {
+			ipcRenderer.sendSync('create-mysql-connection', data)
+			this.$getGlobal('connection').connect((err) => {
 				if (err) {
 					this.btn.loading = false
 					this.btn.text = '连接数据库'
@@ -114,7 +114,7 @@ export default {
 				}
 				this.btn.loading = false
 				this.btn.text = '连接数据库'
-				this.$message.success('连接数据库成功，即将进入Dof-GM工具...')
+				this.$message.success('连接数据库成功，欢迎使用Dof-GM工具(⊙﹏⊙)')
 				this.isConnected = true
 				this.$router.push({path: '/accounts'})
 			})

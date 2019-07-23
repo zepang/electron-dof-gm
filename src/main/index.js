@@ -1,16 +1,24 @@
 'use strict'
 
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+import db from '../db'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow
+global.connection = null
 
 function createMainWindow() {
   Menu.setApplicationMenu(null)
+
+  ipcMain.on('create-mysql-connection', (event, arg) => {
+    global.connection = db.createConnection(arg)
+    event.returnValue = global.connection
+  })
+
   const window = new BrowserWindow({
     width: 1200,
     height: 800,

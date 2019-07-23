@@ -55,7 +55,7 @@ export default {
   methods: {
     getList () {
       let sql = `select * from d_taiwan.accounts`
-      this.$connection.query(sql, (error, result) => {
+      this.$getGlobal('connection').query(sql, (error, result) => {
         if (error) {
           console.log(error)
           return

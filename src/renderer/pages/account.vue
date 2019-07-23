@@ -62,7 +62,7 @@ export default {
   methods: {
     getCount (uid) {
       let sql = `select charac_no,charac_name,job,lev,grow_type from taiwan_cain.charac_info where m_id=${uid}`
-      this.$connect.query(sql, (error, result) => {
+      this.$getGlobal('connection').query(sql, (error, result) => {
         if (error) {
           console.log(error)
           return
