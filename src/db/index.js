@@ -6,7 +6,9 @@ export default {
       host: options.host,
       user: options.user,
       password: options.password,
-      port: options.port
+      port: options.port,
+      charset: 'utf8',
+      debug: true
     })
     return connection
   }

@@ -105,6 +105,7 @@ export default {
 		},
 		login (data) {
 			ipcRenderer.sendSync('create-mysql-connection', data)
+			console.log(this.$getGlobal('connection'))
 			this.$getGlobal('connection').connect((err) => {
 				if (err) {
 					this.btn.loading = false
@@ -128,7 +129,7 @@ export default {
   height: 100vh;
   position: relative;
   #background-video {
-    height: 580px;
+    height: 760px;
     position: absolute;
     top: 50%;
     left: 50%;
