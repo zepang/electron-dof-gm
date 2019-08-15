@@ -27,4 +27,7 @@ html {
 #app {
   height: 100vh;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

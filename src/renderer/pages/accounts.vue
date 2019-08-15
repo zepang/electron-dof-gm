@@ -2,7 +2,7 @@
   <div class="home-page">
     <header>
       <a-row style="line-height: 32px;">
-        <a-col :span="2">用户账号</a-col>
+        <a-col :span="3">用户账号：</a-col>
         <a-col :span="8">
           <a-input-search
             placeholder="输入用户名"
@@ -60,7 +60,6 @@ export default {
           console.log(error)
           return
         }
-        console.log(result)
         this.tableData = result.map(item => {
           item.key = item.UID
           return item
@@ -74,5 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+main {
+  margin-top: 20px;
+}
 </style>

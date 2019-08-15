@@ -9,16 +9,20 @@
       <div class="logo">
         Dof<span v-if="!collapsed">-GM System</span>
       </div>
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
-        <a-menu-item key="1">
-          <a-icon type="user" />
+      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['accounts']" :selectedKeys="selectedKeys">
+        <a-menu-item key="accounts" @click="navTo('accounts')">
+          <a-icon type="user-add" />
           <span>用户管理</span>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item key="roles" @click="navTo('roles')">
+          <a-icon type="usergroup-add" />
+          <span>角色管理</span>
+        </a-menu-item>
+        <a-menu-item key="email">
           <a-icon type="mail" />
           <span>邮件管理</span>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="func">
           <a-icon type="appstore" />
           <span>常用功能</span>
         </a-menu-item>
@@ -26,11 +30,31 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
-        <a-icon
-          class="trigger"
-          :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-          @click="()=> collapsed = !collapsed"
-        />
+        <a-row type="flex" justify="space-between" align="center">
+          <a-col :span="2">
+            <a-icon
+              class="trigger"
+              :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+              @click="()=> collapsed = !collapsed"
+            />
+          </a-col>
+          <a-col :span="14">
+            <a-row type="flex" align="center">
+              <a-col :span="6">当前选择角色：</a-col>
+              <a-col :span="6">
+                <a-tooltip placement="bottom" >
+                  <template slot="title">
+                    <span>点击进入角色列表选择角色</span>
+                  </template>
+                  <router-link style="color: #1890ff;" to="/accounts" class="cursor-pointer">请选择角色</router-link>
+                </a-tooltip>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="3">
+            <a-button type="danger"  icon="poweroff" @click="enterIconLoading">退出</a-button>
+          </a-col>
+        </a-row>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 0px 24px 16px', padding: '24px', background: '#fff', minHeight: '280px', overflowY: 'auto' }">
         <router-view></router-view>
@@ -42,9 +66,32 @@
 export default {
   data(){
     return {
+      selectedKeys: ['accounts'],
       collapsed: false,
     }
   },
+  methods: {
+    navTo (key) {
+      switch (key) {
+        case 'accounts':
+          this.$router.push('/accounts')
+          this.selectedKeys = [key]
+          break;
+        case 'roles':
+          this.$router.push('/roles')
+          this.selectedKeys = [key]
+          break;
+        case 'mail':
+          this.$router.push('/mail')
+          this.selectedKeys = [key]
+          break;
+        case 'func':
+          this.$router.push('/func')
+          this.selectedKeys = [key]
+          break;
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

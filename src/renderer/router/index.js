@@ -6,6 +6,7 @@ import primaryLayout from '../Layout/primary'
 import accounts from '../pages/accounts'
 import account from '../pages/account'
 import login from '../pages/login'
+import roles from '../pages/roles'
 
 Vue.use(Router)
 
@@ -31,7 +32,12 @@ export default new Router({
           path: 'accounts/:id',
           name: 'account',
           component: account,
-        }
+        },
+        {
+          path: 'roles',
+          name: 'roles',
+          component: roles,
+        },
       ]
     }
   ]
