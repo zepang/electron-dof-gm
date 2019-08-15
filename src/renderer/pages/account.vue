@@ -62,13 +62,11 @@ export default {
   methods: {
     getCount (uid) {
       let sql = `select charac_no,charac_name,job,lev,grow_type from taiwan_cain.charac_info where m_id=${uid}`
-      this.$getGlobal('connection').query('set names utf8;')
       this.$getGlobal('connection').query(sql, (error, result) => {
         if (error) {
           console.log(error)
           return
         }
-        console.log(result)
         this.tableData = result.map(item => {
           item.key = item.charac_no
           return item

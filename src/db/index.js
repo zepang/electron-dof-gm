@@ -7,8 +7,10 @@ export default {
       user: options.user,
       password: options.password,
       port: options.port,
-      charset: 'utf8',
-      debug: true
+      charset: 'latin1',
+      debug: true,
+      fatal: true,
+      timeout: 20000
     })
     return connection
   }

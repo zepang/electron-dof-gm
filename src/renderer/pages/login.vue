@@ -36,10 +36,10 @@
 								rules: [
 									{ required: true, message: '请输入数据库密码' }
 								],
-								initialValue: 'uu5!^%jg'
+								initialValue: '!q2w%t^y'
 							}
 						]"
-						placeholder="数据库密码， 例如：uu5!^%jg"
+						placeholder="数据库密码， 例如：!q2w%t^y"
 					/>
 				</a-form-item>
 				<a-form-item >
@@ -110,6 +110,7 @@ export default {
 				if (err) {
 					this.btn.loading = false
 					this.btn.text = '连接数据库'
+					console.dir(err)
 					this.$message.error('连接数据库失败，请仔细检查数据库配置信息')
 					return
 				}
