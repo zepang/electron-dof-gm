@@ -30,7 +30,7 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
-        <a-row type="flex" justify="space-between" align="center">
+        <a-row type="flex" justify="space-between" align="middle">
           <a-col :span="2">
             <a-icon
               class="trigger"
@@ -38,21 +38,8 @@
               @click="()=> collapsed = !collapsed"
             />
           </a-col>
-          <a-col :span="14">
-            <a-row type="flex" align="center">
-              <a-col :span="6">当前选择角色：</a-col>
-              <a-col :span="6">
-                <a-tooltip placement="bottom" >
-                  <template slot="title">
-                    <span>点击进入角色列表选择角色</span>
-                  </template>
-                  <router-link style="color: #1890ff;" to="/accounts" class="cursor-pointer">请选择角色</router-link>
-                </a-tooltip>
-              </a-col>
-            </a-row>
-          </a-col>
           <a-col :span="3">
-            <a-button type="danger"  icon="poweroff" @click="enterIconLoading">退出</a-button>
+            <a-button type="danger"  icon="poweroff" @click="logout">退出</a-button>
           </a-col>
         </a-row>
       </a-layout-header>
@@ -90,6 +77,10 @@ export default {
           this.selectedKeys = [key]
           break;
       }
+    },
+    logout () {
+      this.$getGlobal('connection').destroy()
+      this.$router.push('/login')
     }
   }
 }
