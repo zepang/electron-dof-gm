@@ -19,6 +19,13 @@ function createMainWindow() {
     event.returnValue = global.connection
   })
 
+  ipcMain.on('open-devtools', (event, arg) => {
+    if (isDevelopment) {
+      window.webContents.openDevTools(arg)
+    }
+    event.returnValue = true
+  })
+
   const window = new BrowserWindow({
     width: 1200,
     height: 800,

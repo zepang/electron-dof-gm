@@ -39,6 +39,9 @@
             />
           </a-col>
           <a-col :span="3">
+            <a-button type="primary"  @click="devtool">打开开发者工具</a-button>
+          </a-col>
+          <a-col :span="3">
             <a-button type="danger"  icon="poweroff" @click="logout">退出</a-button>
           </a-col>
         </a-row>
@@ -50,6 +53,7 @@
   </a-layout>
 </template>
 <script>
+import { ipcRenderer } from 'electron'
 export default {
   data(){
     return {
@@ -58,6 +62,9 @@ export default {
     }
   },
   methods: {
+    devtool () {
+      ipcRenderer.sendSync('open-devtools', {})
+    },
     navTo (key) {
       switch (key) {
         case 'accounts':

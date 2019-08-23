@@ -46,6 +46,7 @@
     </main>
     <!-- 账号充值Modal -->
     <a-modal
+      ref="rechargeModal"
       title="账号充值"
       :visible="visible"
       @ok="handleModalOk"
@@ -87,10 +88,12 @@ export default {
   methods: {
     recharge (account) {
       this.visible = true
-      console.log(this.visible)
+      console.log(this.$refs.rechargeModal)
     },
     handleModalOk () {},
-    handleModalCancel () {},
+    handleModalCancel () {
+      this.visible = false
+    },
     getList () {
       let sql = `select * from d_taiwan.accounts`
       this.$getGlobal('connection').query(sql, (error, result) => {
