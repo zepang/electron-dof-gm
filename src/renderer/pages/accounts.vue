@@ -7,6 +7,7 @@
           <a-input-search
             placeholder="输入用户名"
             style="width: 200px"
+            v-model="query.name"
             @search="onSearch"
           />
         </a-col>
@@ -22,7 +23,7 @@
         :columns="tableColumns">
         <ul class="actions" slot="action" slot-scope="action">
           <li class="action">
-            <a-button type="link" size="small" @click="recharge(action)">
+            <a-button type="link" size="small" @click="showRechargeModal(action)">
               充值
             </a-button>
           </li>
@@ -47,25 +48,32 @@
     <!-- 账号充值Modal -->
     <a-modal
       ref="rechargeModal"
-      title="账号充值"
+      :title="`账号充值(当前充值账号：${selected.accountname})`"
       :visible="visible"
       @ok="handleModalOk"
+      :footer="null"
       :confirmLoading="confirmLoading"
       @cancel="handleModalCancel">
-      <p>充值</p>
+      <recharge-form @recharge="recharge"></recharge-form>
     </a-modal>
   </div>
 </template>
 <script>
+import rechargeForm from '../components/rechargeForm'
 export default {
   name: 'home',
+  components: { rechargeForm },
   data () {
     return {
       confirmLoading: false,
       visible: false,
       plainOptions: ['全部', '在线', '不在线'],
       userType: '全部',
+      query: {
+        name: ''
+      },
       tableData: [],
+      selected: {},
       tableColumns: [
         {
           title: 'UID',
@@ -86,6 +94,37 @@ export default {
     this.getList()
   },
   methods: {
+    recharge (recharge) {
+      let sqlArr = []
+      if (recharge.cash) {
+        sqlArr.push(`update taiwan_billing.cash_cera set cera=${recharge.cash} where account=`)
+      }
+      if (recharge.cashPoint) {
+        sqlArr.push(`update taiwan_billing.cash_cera_point set cera_point=${recharge.cashPoint} where account=`)
+      }
+      if (recharge.inventory) {
+        sqlArr.push(`update taiwan_cain_2nd.inventory set money=${recharge.inventory} where charac_no=`)
+      }
+      if (recharge.coin) {
+        sqlArr.push(`update taiwan_cain_2nd.member_avatar_coin set avatar_coin=${recharge.coin} where m_id=`)
+      }
+      let query
+      for (let sql of sqlArr) {
+        query += `${sql}${selected.UID};`
+      }
+      this.$getGlobal('connection').query(query, (error, result) => {
+        if (error) {
+          console.log(error)
+          return
+        } else {
+          this.$message.success('充值成功，刷新商城获取切换角色查看')
+          this.visible = false
+        }
+      })
+    },
+    onSearch (value) {
+      this.getList()
+    },
     addAccount (object) {
       let account = {
         id: object.UID,
@@ -93,7 +132,8 @@ export default {
       }
       this.$store.dispatch('selections/addAccount', account)
     },
-    recharge (account) {
+    showRechargeModal (account) {
+      this.selected = account
       this.visible = true
       console.log(this.$refs.rechargeModal)
     },
@@ -103,6 +143,9 @@ export default {
     },
     getList () {
       let sql = `select * from d_taiwan.accounts`
+      if (this.query.name.trim()) {
+        sql = `select * from d_taiwan.accounts where accountname=${this.query.name.trim()}`
+      }
       this.$getGlobal('connection').query(sql, (error, result) => {
         if (error) {
           console.log(error)
@@ -125,8 +168,7 @@ export default {
         this.$message.success('重置角色创建次数成功')
       })
     },
-    onUserTypeChange () {},
-    onSearch () {}
+    onUserTypeChange () {}
   }
 }
 </script>
