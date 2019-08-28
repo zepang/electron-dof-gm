@@ -37,7 +37,7 @@
             </a-button>
           </li>
           <li class="action">
-            <a-button type="link" size="small">
+            <a-button type="link" :disabled="$store.state.selections.accounts.some(item => item.id === action.UID)" size="small" @click="addAccount(action)">
               添加到选定账号列表
             </a-button>
           </li>
@@ -86,6 +86,13 @@ export default {
     this.getList()
   },
   methods: {
+    addAccount (object) {
+      let account = {
+        id: object.UID,
+        name: object.accountname
+      }
+      this.$store.dispatch('selections/addAccount', account)
+    },
     recharge (account) {
       this.visible = true
       console.log(this.$refs.rechargeModal)

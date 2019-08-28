@@ -41,10 +41,10 @@
             <a-button type="primary"  @click="devtool">打开开发者工具</a-button>
           </a-col>
           <a-col :span="8">
-            <a-badge count="5">
+            <a-badge :count="accounts.length">
               <a-button type="dashed" class="drawer-btn" @click="openDrawer('accounts')">选中账号</a-button>
             </a-badge>
-            <a-badge count="5">
+            <a-badge :count="roles.length">
               <a-button type="dashed" class="drawer-btn" @click="openDrawer('roles')">选中角色</a-button>
             </a-badge>
             <a-button type="dashed" icon="poweroff" @click="logout">退出</a-button>
