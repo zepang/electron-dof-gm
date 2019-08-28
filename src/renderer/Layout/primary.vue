@@ -4,8 +4,7 @@
       id="side-bar"
       :trigger="null"
       collapsible
-      v-model="collapsed"
-    >
+      v-model="collapsed">
       <div class="logo">
         Dof<span v-if="!collapsed">-GM System</span>
       </div>
@@ -41,8 +40,14 @@
           <a-col :span="3">
             <a-button type="primary"  @click="devtool">打开开发者工具</a-button>
           </a-col>
-          <a-col :span="3">
-            <a-button type="danger"  icon="poweroff" @click="logout">退出</a-button>
+          <a-col :span="8">
+            <a-badge count="5">
+              <a-button type="dashed" class="drawer-btn" @click="openDrawer('accounts')">选中账号</a-button>
+            </a-badge>
+            <a-badge count="5">
+              <a-button type="dashed" class="drawer-btn" @click="openDrawer('roles')">选中角色</a-button>
+            </a-badge>
+            <a-button type="dashed" icon="poweroff" @click="logout">退出</a-button>
           </a-col>
         </a-row>
       </a-layout-header>
@@ -50,18 +55,87 @@
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
+    <a-drawer
+      :title="drawerTitle"
+      placement="right"
+      :closable="true"
+      @close="onClose"
+      :visible="isDrawerShow">
+      <a-list
+        itemLayout="horizontal"
+        :dataSource="drawerData">
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <a-list-item-meta>
+            <span slot="title">{{item.name}}</span>
+            <a-avatar slot="avatar" :size="24" style="backgroundColor:#1890ff" icon="user"/>
+          </a-list-item-meta>
+          <a-icon slot="actions" @click="deleteItem(index)" type="delete"/>
+        </a-list-item>
+      </a-list>
+    </a-drawer>
   </a-layout>
 </template>
 <script>
 import { ipcRenderer } from 'electron'
+import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return {
       selectedKeys: ['accounts'],
       collapsed: false,
+      drawerTitle: '选中账号列表',
+      drawerDataType: 'accounts',
+      drawerData: [
+        {
+          name: '123'
+        },
+        {
+          name: '123'
+        },
+        {
+          name: '123'
+        }
+      ]
     }
   },
+  computed: {
+    ...mapState({
+      isDrawerShow: state => state.isDrawerShow,
+      accounts: state => state.selections.accounts,
+      roles: state => state.selections.roles
+    })
+  },
+  mounted () {
+    console.log(this.isDrawerShow)
+    console.log(this.$store.state.isDrawerShow)
+    console.log(this.addAccount)
+  },
   methods: {
+    ...mapActions({
+      removeAccount: 'selections/removeAccount',
+      removeRole: 'selections/removeRole'
+    }),
+    onClose () {
+      this.$store.dispatch('switchDrawer')
+    },
+    openDrawer (type) {
+      this.drawerDataType = type
+      if (this.drawerDataType === 'accounts') {
+        this.drawerTitle = '选中账号列表'
+        this.drawerData = this.accounts
+      } else {
+        this.drawerTitle = '选中角色列表'
+        this.drawerData = this.roles
+      }
+      this.$store.dispatch('switchDrawer', true)
+    },
+    deleteItem (index) {
+      if (this.drawerDataType === 'accounts') {
+        this.removeAccount(index)
+      } else {
+        this.removeRole(index)
+      }
+    },
     devtool () {
       ipcRenderer.sendSync('open-devtools', {})
     },

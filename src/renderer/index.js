@@ -4,6 +4,7 @@ import App from './App'
 import router from './router'
 import 'ant-design-vue/dist/antd.css'
 import { remote } from 'electron'
+import store from './store/index.js'
 
 /**
  * start
@@ -25,5 +26,6 @@ Vue.prototype.$getGlobal = getGlobal
 new Vue({
   el: '#app',
   render: h => h(App),
-  router
+  router,
+  store
 })
