@@ -3,8 +3,8 @@ import Antd from 'ant-design-vue/es/index'
 import App from './App'
 import router from './router'
 import 'ant-design-vue/dist/antd.css'
-import { remote } from 'electron'
 import store from './store/index.js'
+import vuePrototypes from './vue-prototypes.js'
 
 /**
  * start
@@ -19,10 +19,10 @@ import store from './store/index.js'
  * end
  */
 
-const { getGlobal } = remote
 
 Vue.use(Antd)
-Vue.prototype.$getGlobal = getGlobal
+Vue.use(vuePrototypes)
+
 new Vue({
   el: '#app',
   render: h => h(App),

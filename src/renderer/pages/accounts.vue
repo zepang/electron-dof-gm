@@ -108,10 +108,11 @@ export default {
       if (recharge.coin) {
         sqlArr.push(`update taiwan_cain_2nd.member_avatar_coin set avatar_coin=${recharge.coin} where m_id=`)
       }
-      let query
+      let query = ''
       for (let sql of sqlArr) {
-        query += `${sql}${selected.UID};`
+        query += `${sql}${this.selected.UID};`
       }
+      debugger
       this.$getGlobal('connection').query(query, (error, result) => {
         if (error) {
           console.log(error)
@@ -143,29 +144,28 @@ export default {
     },
     getList () {
       let sql = `select * from d_taiwan.accounts`
+
       if (this.query.name.trim()) {
         sql = `select * from d_taiwan.accounts where accountname=${this.query.name.trim()}`
       }
-      this.$getGlobal('connection').query(sql, (error, result) => {
-        if (error) {
-          console.log(error)
-          return
-        }
-        this.tableData = result.map(item => {
+
+      this.$query(sql).then(res => {
+        this.tableData = res.map(item => {
           item.key = item.UID
           return item
         })
+      }).catch(error => {
+        this.$message.error('账号列表查询失败')
       })
     },
     resetRolesCount (id) {
       let sql = `update d_taiwan.limit_create_character set count=0 where m_id=${id}`
-      this.$getGlobal('connection').query(sql, (error, result) => {
-        if (error) {
-          console.log(error)
-          this.$message.error('重置角色创建次数失败')
-          return
-        }
+      
+      this.$query(sql).then(res => {
         this.$message.success('重置角色创建次数成功')
+      }).catch(error => {
+         this.$message.error('重置角色创建次数失败')
+         throw new Error(error)
       })
     },
     onUserTypeChange () {}
